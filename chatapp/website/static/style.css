@@ -1,0 +1,112 @@
+body.day-mode {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .chat-sidebar {
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #17a2b8; /* Soft teal for the sidebar */
+  }
+
+  .chat-sidebar .list-group-item {
+    background-color: #17a2b8; /* Matching background for list items */
+    color: white;
+  }
+
+  .chat-sidebar .list-group-item:hover,
+  .chat-sidebar .list-group-item.active {
+    background-color: #138496; /* Darker teal on hover/active */
+    color: white;
+  }
+
+  .chat-window {
+    height: 70vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 15px;
+    background-color: #f8f9fa;
+  }
+
+  .chat-header {
+    background-color: #6f42c1; /* Dark purple for chat header */
+    color: white;
+  }
+
+  .chat-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: #f3e5f5; /* Light purple for input area */
+    border-top: 1px solid #ddd;
+  }
+
+  .chat-message {
+    margin-bottom: 15px;
+  }
+
+  .chat-message p {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+  }
+
+  .chat-message-sent p {
+    background-color: #28a745; /* Green for sent messages */
+    color: white;
+    float: right;
+  }
+
+  .chat-message-received p {
+    background-color: #e6e6fa; /* Pale lavender for received messages */
+  }
+
+  /* Night Mode Styles */
+  body.night-mode {
+    background-color: #212529;
+    color: #ffffff;
+  }
+
+  .night-mode .chat-sidebar {
+    background-color: #343a40;
+  }
+
+  .night-mode .chat-sidebar .list-group-item {
+    background-color: #343a40;
+    color: #ffffff;
+  }
+
+  .night-mode .chat-sidebar .list-group-item:hover,
+  .night-mode .chat-sidebar .list-group-item.active {
+    background-color: #495057;
+    color: #ffffff;
+  }
+
+  .night-mode .chat-header {
+    background-color: #495057;
+    color: #ffffff;
+  }
+
+  .night-mode .chat-window {
+    background-color: #343a40;
+  }
+
+  .night-mode .chat-input {
+    background-color: #495057;
+    color: #ffffff;
+  }
+
+  /* Toggle Button Styling */
+  .toggle-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 20px;
+  }
