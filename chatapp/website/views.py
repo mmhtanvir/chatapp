@@ -9,7 +9,8 @@ views = Blueprint("views", __name__)
 @views.route("/")
 @views.route("/home")
 def home():
-    return render_template('index.html')
+    msg = Message.query.order_by(asc(Message.date_created)).all()
+    return render_template("index.html", user=current_user, msg=msg)
 
 @views.route("/message", methods=['GET', 'POST'])
 def message():
