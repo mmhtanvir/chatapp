@@ -1,14 +1,19 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO
 from os import path
 from flask_login import LoginManager
+from .event import socketio
 
 db = SQLAlchemy()
 DB_NAME = "chatapp"
 
+
 def create_app():
     app = Flask(__name__)
+    socketio.init_app(app)
 
+    app.config["DEBUG"] = True
     app.config['SECRET_KEY'] = "secretkey"
     app.config["SQLALCHEMY_DATABASE_URI"] = f'mysql://root:@localhost/{DB_NAME}'
     db.init_app(app)
