@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Offcanvas for mobile view (right side) -->
+<div class="offcanvas offcanvas-end d-md-none" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Users</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-group">
+            {% for user in users %}
+                {% if user.id == current_user.id %}
+                    <li class="list-group-item">You</li>
+                {% else %}
+                    <li class="list-group-item">{{ user.name }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- Sidebar for desktop view -->
+<div class="col-md-3 d-none d-md-block bg-light">
+    <div class="list-group">
+        {% for user in users %}
+            {% if user.id == current_user.id %}
+                <h1>add people to chat</h1>
+            {% else %}
+                <a href="/chat/{{ user.id }}" class="list-group-item list-group-item-action"> 
+                    {{ user.name }} 
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Chat box -->
+<div class="col-md-9 bg-white d-flex flex-column">
+    <div class="container-fluid py-2 border-bottom">
+        <div class="d-flex align-items-center">
+            <img src="img.jpg" class="rounded-circle me-2">
+            <div>
+                <h6 class="mb-0"></h6>
+                <small class="text-muted">Online</small>
+            </div>
+        </div>
+    </div>
+    <div class="flex-grow-1 p-3 overflow-auto" id="messages">
+        {% for msg in messages %}
+        <div class="d-flex flex-row {{ 'justify-content-start' if msg.user.id != current_user.id else 'justify-content-end' }} mb-3">
+            <div class="{{ 'bg-white text-black' if msg.user.id != current_user.id else 'bg-primary text-white' }} p-2 rounded shadow-sm">
+                {{ msg.text }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var socket = io.connect('http://127.0.0.1:5000/');
+
+            socket.on('connect', function(){
+                console.log('connected');
+            });
+
+            socket.on('message', function(msg){
+                $("#messages").append('<li>'+msg+'</li>');
+                console.log('recived');
+            });
+
+            $('#send').on('click', function() {
+                socket.send($('#myMessage').val());
+                $('#myMessage').val('');
+            });
+        });
+    </script>
+
+    <div class="p-3 bg-white border-top">
+        <div class="input-group">
+            <input type="text" name="text" id="myMessage" class="form-control" placeholder="Type a message..." aria-label="Type a message" required>
+            <button type="submit" id="send" class="btn btn-outline-primary rounded-pill ms-2">
+                <i class="bi bi-send"></i>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

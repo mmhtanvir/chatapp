@@ -1,9 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO
 from os import path
 from flask_login import LoginManager
-from .event import socketio
+from .extension import socketio
 
 db = SQLAlchemy()
 DB_NAME = "chatapp"

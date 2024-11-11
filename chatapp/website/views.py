@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import asc
 from .models import User, Message
 from . import db
-from flask_socketio import emit
+from flask_socketio import send
 from .extension import socketio
 
 views = Blueprint("views", __name__)
@@ -12,31 +12,24 @@ views = Blueprint("views", __name__)
 @views.route("/home")
 @login_required
 def home():
-    msg = Message.query.order_by(asc(Message.date_created)).all()
     user = User.query.all()
-    return render_template("index.html", users=current_user, msg=msg, user=user)
+    return render_template("index.html", users=current_user, user=user)
 
-@views.route("/message", methods=['GET', 'POST'])
-def message():
-    if request.method == "POST":
-        message = request.form.get('message')
-        print(message)
-        
-    if not message:
-        flash('Category Name cannot be empty', category='error')
-    else:
-            msg = Message(text = message, author=current_user.id)
-            db.session.add(msg)
-            db.session.commit()
-            flash('Text sent!', category='success')
-    return redirect(url_for("views.home"))
+@views.route("/chat/<id>")
+@login_required
+def chat(id):
+    chat_user = User.query.filter_by(id=id).first()
+    messages = Message.query.order_by(asc(Message.date_created)).all()
+    return render_template("chat.html", messages=messages, chat=chat_user)
 
 
-
-
-@socketio.on('message')
-def text(message):    
-    message = Message( text=text)
-    db.session.add(message)
+@socketio.on("message")
+def sendMessage(message):
+    
+    print("sent")
+    
+    messages = Message(text = message, author=current_user.id)
+    db.session.add(messages)
     db.session.commit()
-    emit('message', {'msg': session.get('username') + ' : ' + message['msg']})
+    
+    send(message, broadcast=True)
